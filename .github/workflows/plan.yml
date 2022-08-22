@@ -61,10 +61,6 @@ jobs:
         id: apply
         run: terraform apply -auto-approve -input=false
 
-      - name: Cat no arquivo criado 
-        if: steps.plan.outcome != 'failure'
-        run: |       
-          cat ./secret.txt
 
   Destroy:
     name: Destroi
@@ -76,4 +72,5 @@ jobs:
     steps:
       - name: Terraform Destroy
         id: destroy
+        if: steps.apply.outcome != 'failure'
         run: terraform destroy -auto-approve 

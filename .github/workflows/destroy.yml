@@ -1,0 +1,19 @@
+name: "Plan / Test on PR"
+on:
+  workflow_run:
+    workflows: [plan]
+    types:
+      - completed
+jobs:
+  Destroy:
+    name: Destroi
+    env:
+      TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+    runs-on: ubuntu-latest    
+    
+    steps:
+      - name: Terraform Destroy
+        id: destroy
+        if: steps.apply.outcome != 'failure'
+        run: terraform destroy -auto-approve 
